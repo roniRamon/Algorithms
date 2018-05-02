@@ -16,33 +16,36 @@ class Node
   def remove
     # optional but useful, connects previous node to next node
     # and removes self from list.
-    self.prev.next = self.next if self.prev
-    self.next.prev = self.prev if self.next
-    self.next = nil
-    self.prev = nil
-    self
+    @prev.next = @next
+    @next.prev = @prev
+    @next = nil
+    @prev = nil
   end
 end
 
 class LinkedList
   def initialize
-    @head = Node.new("head")
-    @tail = Node.new("tail")
+    @head = Node.new
+    @tail = Node.new
     @head.next = @tail
     @tail.prev = @head
   end
 
   def [](i)
-    each_with_index { |node, j| return node if i == j }
+    j = 0
+    each do |node|
+       return node if i == j
+       j += 1
+     end
     nil
   end
 
   def first
-    empty? ? nil : @head.next
+    @head.next
   end
 
   def last
-    empty? ? nil : @tail.prev
+    @tail.prev
   end
 
   def empty?
@@ -51,16 +54,14 @@ class LinkedList
 
   def get(key)
     node = get_node(key)
-    if node == nil
-      return nil
-    end
+    return nil if node == nil
     node.val
   end
 
   def get_node(key)
     return nil if first == nil
     node = first
-    until node.key == 'tail'
+    until node == @tail
       if node.key == key
         return node
       end
@@ -70,18 +71,17 @@ class LinkedList
   end
 
   def include?(key)
-    if get(key) == nil
-      return false
-    end
+    return false if get(key) == nil
     true
   end
 
   def append(key, val)
     node = Node.new(key, val)
     @tail.prev.next = node
+    node.prev = @tail.prev
     @tail.prev = node
     node.next = @tail
-    node.prev = @tail.prev
+    node
   end
 
   def update(key, val)
@@ -91,22 +91,23 @@ class LinkedList
 
   def remove(key)
     each do |node|
-     if node.key == key
-       node.remove
-       return node.val
-     end
-   end
+      if node.key == key
+        node.remove
+        return node.val
+      end
+    end
 
-   nil
+    nil
   end
 
   def each
-    current_node = @head.next
-     until current_node == @tail
-       yield current_node
-       current_node = current_node.next
+     node = @head.next
+     until node == @tail
+       yield node
+       node = node.next
      end
    end
+
 
   # uncomment when you have `each` working and `Enumerable` included
   def to_s
