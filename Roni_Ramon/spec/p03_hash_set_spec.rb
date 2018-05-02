@@ -30,7 +30,7 @@ describe HashSet do
 
       expect(set.include?([])).to be(true)
       expect(set.include?([[]])).to be(false)
-
+      
       expect(set.include?({:a => 3, :b => 4})).to be(true)
       expect(set.include?({:b => 4, :a => 3})).to be(true)
     end
