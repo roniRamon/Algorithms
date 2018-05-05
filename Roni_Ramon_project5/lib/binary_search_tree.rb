@@ -100,28 +100,50 @@ class BinarySearchTree
     end
   end
 
-  # def minimum(tree_node = @root)
-  #   if tree_node.left.nil?
-  #     tree_node
-  #   else
-  #     maximum(tree_node.left)
-  #   end
-  # end
-
-  #############################
-  # prefilled_bst looks like: #
-  #             (5)           #
-  #            /   \          #
-  #          (3)   (7)        #
 
   def depth(tree_node = @root)
+    return -1 unless tree_node
+    left = depth(tree_node.left)
+    right = depth(tree_node.right)
 
+    left > right ? left + 1 : right + 1
   end
 
   def is_balanced?(tree_node = @root)
+    depths = []
+    stack = []
+
+    stack.push([tree_node, 0])
+
+    while stack.length > 0
+      tree_node, depth = stack.pop
+      if !tree_node.left && !tree_node.right
+        if !depths.include?(depth)
+          depths << depth
+          if depths.length > 2 || (depths.length == 2 && (depth[0] - depth[1]).abs > 1)
+            return false
+          end
+        end
+      else
+        stack.push([tree_node.left, depth + 1]) if tree_node.left
+        stack.push([tree_node.right, depth + 1]) if tree_node.right
+      end
+    end
+
+    true
   end
 
-  def in_order_traversal(tree_node = @root, arr = [])
+  def in_order_traversal(tree_node = @root)
+    arr = []
+    traversal(tree_node, arr)
+    arr
+  end
+
+  def traversal(tree_node = @root, arr = [])
+    return arr unless tree_node
+    traversal(tree_node.left, arr) if tree_node.left
+    arr << tree_node.value
+    traversal(tree_node.right, arr) if tree_node.right
   end
 
 
