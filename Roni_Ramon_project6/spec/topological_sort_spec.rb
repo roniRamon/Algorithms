@@ -34,7 +34,6 @@ describe 'TopologicalSort' do
       Edge.new(v5, v6)
       Edge.new(v6, v7)
       Edge.new(v7, v8)
-      debugger
       expect(solutions).to include(topological_sort(vertices.shuffle).map{ |vert| vert.value})
     end
   end
