@@ -14,6 +14,7 @@ describe '#install_order' do
   it 'returns the correct order' do
     arr = [[3, 1], [2, 1], [6, 5], [3, 6], [3, 2], [4, 3], [9, 1]]
     result = install_order(arr)
+    debugger
     expect(result.index(3)).to be > result.index(1)
     expect(result.index(2)).to be > result.index(1)
     expect(result.index(6)).to be > result.index(5)
